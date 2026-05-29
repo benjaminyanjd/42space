@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>42 盈利钱包榜单</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">42 Profit Wallet Leaderboard</p>
+          <h1>盈利钱包总榜</h1>
+          <p class="subtitle">独立扫描当前 100 个标的 holders，按已实现 + 未实现 PnL 排序，展示钱包、收益、成本、ROI 和主要盈利标的。</p>
+        </div>
+        <div class="status-card">
+          <span id="profit-dot" class="dot"></span>
+          <div>
+            <strong id="profit-status">等待扫描</strong>
+            <span id="profit-updated">尚未更新</span>
+            <span><a class="inline-link" href="./">返回机会雷达</a></span>
+          </div>
+        </div>
+      </header>
+
+      <section class="leaderboard-panel standalone-leaderboard" id="profit-leaderboard-section">
+        <div class="section-title">
+          <div>
+            <h2>盈利钱包总榜</h2>
+            <p>榜单只在本页扫描，不再挤在首页。遇到 42 API 限流时会重试，并展示已成功扫描的数据。</p>
+          </div>
+          <button id="refresh-profit-leaderboard" class="mini-action" type="button">刷新榜单</button>
+        </div>
+        <div id="profit-summary" class="profit-summary">等待数据</div>
+        <div id="profit-leaderboard" class="profit-leaderboard"></div>
+      </section>
+    </main>
+
+    <script src="profit.js" type="module"></script>
+  </body>
+</html>

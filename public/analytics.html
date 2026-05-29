@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>42 事件战壕数据分析</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell analytics-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">42 Event Rush Analytics</p>
+          <h1>事件战壕数据总览</h1>
+          <p class="subtitle">统计当前 API 快照内所有事件标的、Outcome、成交量、市值、交易者、时间窗口、分类分布和异常结构。</p>
+        </div>
+        <div class="status-card">
+          <span id="analytics-dot" class="dot"></span>
+          <div>
+            <strong id="analytics-status">读取中</strong>
+            <span id="analytics-updated">等待数据</span>
+            <span><a class="inline-link" href="./">返回机会雷达</a></span>
+          </div>
+        </div>
+      </header>
+
+      <section id="analytics-error" class="error hidden"></section>
+
+      <section class="analytics-panel analytics-overview">
+        <div class="section-title compact-title">
+          <div>
+            <h2>全市场核心指标</h2>
+            <p id="analytics-summary">从 /api/snapshot 拉取当前所有可见标的。</p>
+          </div>
+          <button id="refresh-analytics" class="mini-action" type="button">刷新数据</button>
+        </div>
+        <div id="analytics-metrics" class="metric-grid"></div>
+      </section>
+
+      <section class="analytics-panel">
+        <div class="section-title compact-title">
+          <div>
+            <h2>历史图表</h2>
+            <p id="analytics-chart-summary">按历史点统计每日唯一交易者新增、每日成交量和 24h 成交增长来源。</p>
+          </div>
+        </div>
+        <div id="analytics-history-charts" class="history-chart-grid"></div>
+      </section>
+
+      <section class="analytics-layout">
+        <div class="analytics-panel">
+          <div class="section-title compact-title">
+            <div>
+              <h2>结构分布</h2>
+              <p>看市场集中在哪些状态、窗口、分类和 Outcome 结构。</p>
+            </div>
+          </div>
+          <div id="analytics-distributions" class="distribution-grid"></div>
+        </div>
+
+        <div class="analytics-panel">
+          <div class="section-title compact-title">
+            <div>
+              <h2>异常与机会清单</h2>
+              <p>按流动性、集中度、新标的、临近结束和高赔率筛选。</p>
+            </div>
+          </div>
+          <div id="analytics-flags" class="flag-grid"></div>
+        </div>
+      </section>
+
+      <section class="analytics-panel">
+        <div class="section-title compact-title">
+          <div>
+            <h2>排行榜</h2>
+            <p>按成交量、市值、交易者、评分、赔率和 Outcome 活跃度排序。</p>
+          </div>
+        </div>
+        <div id="analytics-rankings" class="ranking-grid"></div>
+      </section>
+    </main>
+
+    <script src="analytics.js" type="module"></script>
+  </body>
+</html>

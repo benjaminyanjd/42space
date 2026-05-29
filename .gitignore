@@ -1,0 +1,13 @@
+.env
+node_modules/
+
+# Runtime state and local caches
+42-*.json
+*.log
+*.zip
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,15 @@
+{
+  "name": "fortytwo-new-event-monitor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "monitor:42": "node monitor-42-events.mjs",
+    "monitor:42:once": "node monitor-42-events.mjs --once",
+    "web": "node server.mjs",
+    "check": "node --check monitor-42-events.mjs && node --check server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

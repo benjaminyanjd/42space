@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>42 事件战壕监控</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">42 Event Rush Monitor</p>
+          <h1>事件战壕机会雷达</h1>
+          <p class="subtitle">实时盯新标的、临近结束窗口、成交放量和 Outcome 拉升。页面每 5 秒刷新一次，异动会同步推 Telegram。</p>
+        </div>
+        <div class="status-card">
+          <span id="health-dot" class="dot"></span>
+          <div>
+            <strong id="health-text">连接中</strong>
+            <span id="last-updated">等待数据</span>
+            <span id="next-refresh">下次刷新 --</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="notify-bar">
+        <div>
+          <strong>浏览器异动提醒</strong>
+          <span id="notify-status">未启用。启用后，新异动会弹出浏览器通知并播放提示音。</span>
+        </div>
+        <button id="enable-alerts" type="button">启用提醒</button>
+      </section>
+
+      <div id="toast-host" class="toast-host" aria-live="polite"></div>
+
+      <aside class="profit-monitor-panel" aria-label="盈利钱包监控">
+        <div class="section-title">
+          <div>
+            <h2>盈利钱包监控</h2>
+            <p>实时扫描 Top 盈利钱包，新买入标的会累计在这里。</p>
+          </div>
+          <span id="profit-monitor-count">0</span>
+        </div>
+        <div class="monitor-meta">
+          <span id="profit-monitor-status">等待建立钱包持仓基线</span>
+          <button id="refresh-profit-monitor" type="button">刷新</button>
+        </div>
+        <div id="profit-monitor-feed" class="profit-monitor-feed">
+          <div class="empty">暂无新买入。首次扫描只建立基线，不推旧持仓。</div>
+        </div>
+      </aside>
+
+      <section id="error" class="error hidden"></section>
+
+      <section class="radar-grid">
+        <button class="radar-card active" data-quick="all">
+          <span>全部标的</span>
+          <strong id="radar-all">-</strong>
+        </button>
+        <button class="radar-card" data-quick="alerts">
+          <span>有异动</span>
+          <strong id="radar-alerts">-</strong>
+        </button>
+        <button class="radar-card" data-quick="new">
+          <span>新创建</span>
+          <strong id="radar-new">-</strong>
+        </button>
+        <button class="radar-card" data-quick="endingSoon">
+          <span>临近结束</span>
+          <strong id="radar-ending">-</strong>
+        </button>
+        <a class="radar-card leaderboard-jump" id="radar-profit-leaderboard" href="profit.html">
+          <span>盈利钱包榜单</span>
+          <strong id="radar-profit-wallets">进入</strong>
+        </a>
+        <a class="radar-card analytics-jump" id="radar-analytics" href="analytics.html">
+          <span>数据分析</span>
+          <strong>进入</strong>
+        </a>
+      </section>
+
+      <section class="controls">
+        <input id="keyword" placeholder="搜索问题 / Outcome / 地址" />
+        <select id="status">
+          <option value="">全部状态</option>
+        </select>
+        <select id="category">
+          <option value="">全部类别</option>
+        </select>
+        <select id="time-type">
+          <option value="">全部时间类型</option>
+        </select>
+      </section>
+
+      <section class="alerts-panel">
+        <div class="section-title">
+          <div>
+            <h2>最近异动</h2>
+            <p>满足 5 分钟涨幅阈值的标的会出现在这里，并推送到 Telegram。</p>
+          </div>
+          <span id="alert-count">0</span>
+        </div>
+        <div id="alerts" class="alerts"></div>
+      </section>
+
+      <section class="section-title market-title">
+        <div>
+          <h2>按时间窗口分类</h2>
+          <p>每组优先显示有异动和高评分标的。Outcome 默认折叠，点击卡片可展开。</p>
+        </div>
+        <span id="market-count">0</span>
+      </section>
+      <section id="markets" class="markets"></section>
+    </main>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
