@@ -1,18 +1,38 @@
 $ErrorActionPreference = 'Continue'
 
-schtasks /End /TN FortyTwoEventDashboard | Out-Null
-schtasks /Delete /TN FortyTwoEventDashboard /F | Out-Null
+$taskName = 'FortyTwoEventDashboard'
+$project = 'C:\Users\Administrator\fortytwo-new-event-monitor'
+$runner = Join-Path $project 'run-dashboard.ps1'
 
-$taskRun = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\Administrator\fortytwo-new-event-monitor\run-dashboard.ps1'
-schtasks /Create /F /TN FortyTwoEventDashboard /SC ONSTART /RU SYSTEM /RL HIGHEST /TR $taskRun
-schtasks /Run /TN FortyTwoEventDashboard
+Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue | Out-Null
 
+$action = New-ScheduledTaskAction `
+  -Execute 'powershell.exe' `
+  -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+
+$trigger = New-ScheduledTaskTrigger -AtStartup
+$principal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -RunLevel Highest
+$settings = New-ScheduledTaskSettingsSet `
+  -AllowStartIfOnBatteries `
+  -DontStopIfGoingOnBatteries `
+  -ExecutionTimeLimit ([TimeSpan]::Zero) `
+  -RestartCount 999 `
+  -RestartInterval (New-TimeSpan -Minutes 1)
+
+Register-ScheduledTask `
+  -TaskName $taskName `
+  -Action $action `
+  -Trigger $trigger `
+  -Principal $principal `
+  -Settings $settings `
+  -Force | Out-Null
+
+Start-ScheduledTask -TaskName $taskName
 Start-Sleep -Seconds 8
 
 Write-Output '---TASK---'
-schtasks /Query /TN FortyTwoEventDashboard /V /FO LIST |
-  Select-String -Pattern 'TaskName|Status|Task To Run|Last Run Time|Last Result' |
-  ForEach-Object { $_.Line }
+Get-ScheduledTask -TaskName $taskName | Format-List TaskName,State,TaskPath | Out-String | Write-Output
+Get-ScheduledTaskInfo -TaskName $taskName | Format-List LastRunTime,LastTaskResult,NextRunTime | Out-String | Write-Output
 
 Write-Output '---NODE PROCS---'
 Get-CimInstance Win32_Process |
@@ -28,4 +48,4 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:4242/api/health' -TimeoutSec 10 |
   Write-Output
 
 Write-Output '---LOG---'
-Get-Content -LiteralPath 'C:\Users\Administrator\fortytwo-new-event-monitor\dashboard.log' -Tail 20
+Get-Content -LiteralPath (Join-Path $project 'dashboard.log') -Tail 20
